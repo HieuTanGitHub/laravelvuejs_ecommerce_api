@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^1.2.0",
+        "flowbite": "^2.5.2",
         "vue-router": "^4.5.0"
     }
 }
