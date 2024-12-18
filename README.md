@@ -4,8 +4,7 @@
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-
-<h4>Run this Project</h4>
+<h4>Run This Project</h4>
 <p>1.Npm install, to install node_modules<p>
 <p>2.php artisan serve ,to run laravel API, api/categories , api/brands, api/products<p>
 <p>3.npm run dev, to run vuejs<p>
