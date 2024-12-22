@@ -164,6 +164,7 @@ export default {
         this.fetchProducts();
         this.fetchCategories();
         this.fetchBrands();
+        this.loadCartFromLocalStorage();
     },
     methods: {
         async handleProductSubmit() {
@@ -244,6 +245,9 @@ export default {
             alert('Add to Cart Successfully');
             this.isCartModalOpen = true;
         },
+        removeFromCart(productId) {
+            this.cart = this.cart.filter(item => item.id !== productId);
+        },
         saveCartToLocalStorage() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
         },
@@ -269,6 +273,7 @@ export default {
         closeCartModal() {
             this.isCartModalOpen = false;
         },
+
     }
 }
 </script>
