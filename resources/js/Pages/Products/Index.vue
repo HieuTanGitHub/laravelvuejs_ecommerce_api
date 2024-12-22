@@ -7,6 +7,10 @@
             <button @click="openProductModal()" class="bg-teal-500 text-dark px-4 py-2 rounded mb-4">
                 Add Product
             </button>
+            <!-- View Cart Button -->
+            <button @click="openCartModal()" class="bg-blue-500 text-dark px-4 py-2 rounded mb-4">
+                View Cart
+            </button>
             <div v-if="loading" class="text-center text-blue-600">Loading products...</div>
             <div v-else>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -27,7 +31,45 @@
                         <button @click="deleteProduct(product.id)" class="bg-red-500 text-white px-4 py-2 rounded">
                             Delete
                         </button>
+                        <div class="mt-4">
+                            <button @click="addToCart(product)" class="bg-teal-500 text-dark px-4 py-2 rounded">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Modal -->
+            <div v-if="isCartModalOpen" @click.self="closeCartModal"
+                class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+                <div class="bg-white p-6 rounded shadow-lg w-1/3">
+                    <h2 class="text-xl font-semibold mb-4">Cart</h2>
 
+                    <div v-if="cart.length === 0" class="text-gray-500">Your cart is empty.</div>
+                    <div v-else>
+                        <div v-for="item in cart" :key="item.id" class="flex items-center border p-4 mb-2">
+                            <!-- Product Image -->
+                            <img :src="item.img_url" alt="Product Image" class="w-16 h-16 object-cover rounded mr-4" />
+
+                            <!-- Product Details -->
+                            <div class="flex-1">
+                                <span class="block font-semibold">{{ item.name }} (x{{ item.quantity }})</span>
+                                <span class="text-gray-500">Price: {{ item.price }}</span>
+                            </div>
+
+                            <!-- Total Price -->
+                            <span class="font-bold text-teal-500">{{ (item.price * item.quantity).toFixed(2) }}</span>
+
+                            <!-- Remove Button -->
+                            <button @click="removeFromCart(item.id)" class="ml-4 text-red-500">X</button>
+                        </div>
+
+                    </div>
+
+                    <div class="flex justify-end mt-4">
+                        <button @click="closeCartModal" class="bg-gray-500 text-white px-4 py-2 rounded">
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
@@ -103,9 +145,11 @@ export default {
             products: [],
             categories: [],
             brands: [],
+            cart: [],
             loading: true,
             isModalOpen: false,
             isEditing: false,
+            isCartModalOpen: false,
             form: {
                 id: null,
                 name: '',
@@ -188,6 +232,27 @@ export default {
                 console.error('Error deleting product:', error);
             }
         },
+        addToCart(product) {
+            const cartItem = this.cart.find(item => item.id === product.id);
+            if (cartItem) {
+                cartItem.quantity++;
+            } else {
+                this.cart.push({ ...product, quantity: 1 });
+            }
+            //this.openCartModal();
+            this.saveCartToLocalStorage();
+            alert('Add to Cart Successfully');
+            this.isCartModalOpen = true;
+        },
+        saveCartToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
+        loadCartFromLocalStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                this.cart = JSON.parse(savedCart);
+            }
+        },
         openProductModal(product = null) {
             this.isEditing = !!product;
             this.form = product
@@ -197,6 +262,12 @@ export default {
         },
         closeModal() {
             this.isModalOpen = false;
+        },
+        openCartModal() {
+            this.isCartModalOpen = true;
+        },
+        closeCartModal() {
+            this.isCartModalOpen = false;
         },
     }
 }
