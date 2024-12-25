@@ -110,11 +110,10 @@ export default {
 
 
     },
-    setup() {
 
-
-        return {}
-    }
+    removeFromCart(productId) {
+        this.cart = this.cart.filter(item => item.id !== productId);
+    },
 }
 </script>
 
