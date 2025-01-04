@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -12,7 +13,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Order/Index');
     }
 
     /**
