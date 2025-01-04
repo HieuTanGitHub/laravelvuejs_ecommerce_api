@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CheckoutController;
+use App\Http\Controllers\Backend\OrderController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('brands', BrandController::class);
     Route::resource('products', ProductController::class);
     Route::resource('checkout', CheckoutController::class);
+    Route::resource('order', OrderController::class);
 });
 
 require __DIR__ . '/auth.php';

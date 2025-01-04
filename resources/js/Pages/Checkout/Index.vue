@@ -102,6 +102,7 @@ export default {
         };
     },
     mounted() {
+
         // Fetch the cart data from localStorage
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
@@ -110,10 +111,52 @@ export default {
 
 
     },
+    methods: {
+        async handleSubmit() {
+            // Prepare the data to be sent (shipping info and cart items)
+            const orderData = {
+                name: this.form.name,
+                phone: this.form.phone,
+                address: this.form.address,
+                email: this.form.email,
+                cart_items: this.cart, // Include the cart items here
+            };
 
-    removeFromCart(productId) {
-        this.cart = this.cart.filter(item => item.id !== productId);
-    },
+            try {
+                // Send POST request with shipping and cart data
+                const response = await axios.post('/api/orders', orderData);
+
+                // Handle the response (e.g., show a success message)
+                alert(response.data.message);
+
+                // Optionally, save the shipping information and cart to localStorage
+                localStorage.setItem('shipping', JSON.stringify(this.form));
+                localStorage.setItem('cart', JSON.stringify(this.cart));
+                // Remove the cart data from localStorage and clear cart state
+                localStorage.removeItem('cart');
+                // Clear the cart after the order is placed
+                this.cart = []; // Clear cart if necessary
+            } catch (error) {
+                console.error('There was an error!', error);
+                alert('There was an error placing your order.');
+            }
+        },
+        saveShippingInfo() {
+            // Save the shipping info to localStorage
+            localStorage.setItem('shipping', JSON.stringify(this.form));
+        },
+        loadShippingInfo() {
+            // Load the saved shipping info from localStorage
+            const savedShipping = localStorage.getItem('shipping');
+            if (savedShipping) {
+                this.form = JSON.parse(savedShipping);
+            }
+        },
+        removeFromCart(productId) {
+            this.cart = this.cart.filter(item => item.id !== productId);
+        },
+    }
+
 }
 </script>
 
