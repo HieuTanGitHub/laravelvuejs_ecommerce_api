@@ -70,7 +70,10 @@
                     <!-- Submit Button -->
                     <div class="flex justify-end">
                         <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded">Place Order</button>
+                        <button type="submit" name="redirect" @click="initiatePayment"
+                            class="bg-teal-500 text-white px-4 py-2 mx-3 rounded">VNPAY</button>
                     </div>
+
                 </form>
             </div>
 
@@ -112,6 +115,24 @@ export default {
 
     },
     methods: {
+        async initiatePayment() {
+            try {
+                // Replace with your API endpoint
+                const response = await axios.post("/api/payment", {
+                    amount: 100000, // Replace with actual amount
+                });
+
+                if (response.data.payment_url) {
+                    window.location.href = response.data.payment_url;
+                } else {
+                    alert("Failed to generate payment URL");
+                }
+            } catch (error) {
+                console.error("Payment error:", error);
+                alert("An error occurred during payment initialization.");
+            }
+        },
+
         async handleSubmit() {
             // Prepare the data to be sent (shipping info and cart items)
             const orderData = {
