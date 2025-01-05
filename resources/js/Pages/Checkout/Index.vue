@@ -33,6 +33,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <!-- Sum Total -->
+                    <div class="mt-4 text-right font-semibold">
+                        <span>Total: </span>
+                        <span>{{ total.toFixed(2) }}</span>
+                    </div>
                 </div>
             </div>
             <!-- Checkout Form Section -->
@@ -114,12 +119,18 @@ export default {
 
 
     },
+    computed: {
+        // Computed property to calculate total sum
+        total() {
+            return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+    },
     methods: {
         async initiatePayment() {
             try {
                 // Replace with your API endpoint
                 const response = await axios.post("/api/payment", {
-                    amount: 100000, // Replace with actual amount
+                    amount: this.total, // Replace with actual amount
                 });
 
                 if (response.data.payment_url) {
