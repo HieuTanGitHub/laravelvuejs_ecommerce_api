@@ -5,16 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Order;
 
 class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function index(Request $request) {}
 
     /**
      * Show the form for creating a new resource.
@@ -32,7 +30,7 @@ class PaymentController extends Controller
     {
         // VNPAY credentials
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('payment.index');
+        $vnp_Returnurl = route('checkout.index');
         $vnp_TmnCode = "NJJ0R8FS"; // Merchant code at VNPAY
         $vnp_HashSecret = "BYKJBHPPZKQMKBIBGGXIYKWYFAYSJXCW"; // Secret key
 
